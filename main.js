@@ -1,22 +1,20 @@
 var chunkIt = function(array, divisor) {
 	var chunkArray = [];
-	var maxChunkLength = Math.ceil(array.length / divisor);
+	var chunkLength = Math.ceil(array.length / divisor);
 	var remainder = array.length % divisor;
-	var offset = 0;
 	// Check if array length is evenly divisible by 'divisor' and sets flag to manage remainder conditional in for loop.
-	var even = remainder === 0;
+	var isEven = remainder === 0;
 
-	for(var ii = 0; ii < array.length; ii++) {
-		// "remainder" is decremented each loop so that the first arrays get the extra numbers. For array lengths not evenly divisible, sets 'offset' to -1 aftwards so that each subsequent array get the appropriate numbers afterwards.
+	for(var ii = 0; ii < array.length; ii += chunkLength) {
+		// "remainder" is decremented each loop so that the first arrays get the extra numbers. For array lengths not evenly divisible, decrements 'chunkLength' by 1 aftwards so that each subsequent array gets the appropriate numbers afterwards.
 		if(remainder > 0) {
 			remainder--;
 		}
-		else if(!even) {
-			offset = -1;
+		else if(!isEven) {
+			chunkLength -= 1;
+			isEven = true;
 		}
-		chunkArray.push(array.slice(ii, ii + maxChunkLength + offset));
-		// increases iterator by amount of splice above so that the same element doesn't get used more than once.
-		ii += maxChunkLength + offset - 1;
+		chunkArray.push(array.slice(ii, ii + chunkLength));
 	}
 	return chunkArray
 }
